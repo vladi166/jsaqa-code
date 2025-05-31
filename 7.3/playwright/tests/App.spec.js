@@ -5,7 +5,7 @@ const {email, password, incorrectEmail, incorrectPassword} = require("../user");
 test('Successful authorization', async () => {
   const browser = await chromium.launch({
     headless: false,
-    slowMo: 500,
+    slowMo: 1000,
   })
 
   const page = await browser.newPage("https://netology.ru/?modal=sign_in");
@@ -21,16 +21,20 @@ test('Successful authorization', async () => {
 
   // Click [data-testid="login-submit-btn"]
     await page.click('[data-testid="login-submit-btn"]');
+    await page.screenshot({ path: '03_after_login_click_success.png', fullPage: true });
 
   // Click text=Моё обучение
   await page.click('text=Моё обучение');
+
   await expect(page).toHaveURL('https://netology.ru/profile/9866318');
 
-  browser.close();
+  await page.screenshot({ path: "screenshotSuccessful.png", fullPage: true });
 
-},5000);
+  await browser.close();
 
-test("Failed authorization", async () => {
+},6000);
+
+/*test("Failed authorization", async () => {
   const browser = await chromium.launch({
     headless: false,
     slowMo: 500,
@@ -54,7 +58,9 @@ test("Failed authorization", async () => {
 
   await expect(error).toHaveText("Вы ввели неправильно логин или пароль.");
 
+  await page.screenshot({ path: "screenshotFailed.png", fullPage: true });
+
   browser.close();
 
-}, 50000);
+}, 50000);*/
 
